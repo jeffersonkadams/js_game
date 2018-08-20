@@ -8,15 +8,31 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, roundScore, activePlayer, dice;
+var scores, roundScore, activePlayer;
 
 scores = [0,0];
 roundScore = 0;
-activePlayer = 0;
+activePlayer = 1;
 
-dice = Math.floor(Math.random() * 6) + 1; //random number from 1-6
-
-document.querySelector('#current-' + activePlayer).textContent = dice;
+//document.querySelector('#current-' + activePlayer).textContent = dice;
 //textContent instead of innerHTML because I'm not adding any extra HTML and it isn't necessary.
 
 document.querySelector('.dice').style.display = 'none';
+
+document.getElementById('score-0').textContent = '0';
+document.getElementById('score-1').textContent = '0';
+document.getElementById('current-0').textContent = '0';
+document.getElementById('current-1').textContent = '0';
+
+document.querySelector('.btn-roll').addEventListener('click', function() {
+  //calculate number
+  var dice = Math.floor(Math.random() * 6) + 1; //random number from 1-6
+  //display the number
+  var diceDOM = document.querySelector('.dice');
+  diceDOM.style.display = 'block'; //shows the dice #
+  diceDOM.src = 'dice-' + dice + '.png';
+
+  //update the round score as long as a 1 was not rolled
+
+});
+//https://developer.mozilla.org/en-US/docs/Web/Events
