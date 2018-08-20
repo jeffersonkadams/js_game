@@ -12,7 +12,7 @@ var scores, roundScore, activePlayer;
 
 scores = [0,0];
 roundScore = 0;
-activePlayer = 1;
+activePlayer = 0;
 
 //document.querySelector('#current-' + activePlayer).textContent = dice;
 //textContent instead of innerHTML because I'm not adding any extra HTML and it isn't necessary.
@@ -24,6 +24,7 @@ document.getElementById('score-1').textContent = '0';
 document.getElementById('current-0').textContent = '0';
 document.getElementById('current-1').textContent = '0';
 
+//https://developer.mozilla.org/en-US/docs/Web/Events
 document.querySelector('.btn-roll').addEventListener('click', function() {
   //calculate number
   var dice = Math.floor(Math.random() * 6) + 1; //random number from 1-6
@@ -33,6 +34,29 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
   diceDOM.src = 'dice-' + dice + '.png';
 
   //update the round score as long as a 1 was not rolled
+  if (dice !== 1){
+    //add score
+    roundScore += dice;
+    document.querySelector('#current-' + activePlayer).textContent = roundScore;
+  } else {
+    //next player
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0; //my first ternary operator!
+    roundScore = 0;
 
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
+
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+
+    document.querySelector('.dice').style.display = 'none';
+  }
 });
+
+
+
+
+
+
+
 //https://developer.mozilla.org/en-US/docs/Web/Events
