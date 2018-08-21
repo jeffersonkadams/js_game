@@ -8,9 +8,10 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, roundScore, activePlayer;
+var scores, roundScore, activePlayer, gamePlaying;
 
 init();
+
 
 //document.querySelector('#current-' + activePlayer).textContent = dice;
 //textContent instead of innerHTML because I'm not adding any extra HTML and it isn't necessary.
@@ -19,44 +20,47 @@ init();
 
 //https://developer.mozilla.org/en-US/docs/Web/Events
 document.querySelector('.btn-roll').addEventListener('click', function() {
-  //calculate number
-  var dice = Math.floor(Math.random() * 6) + 1; //random number from 1-6
-  //display the number
-  var diceDOM = document.querySelector('.dice');
-  diceDOM.style.display = 'block'; //shows the dice #
-  diceDOM.src = 'dice-' + dice + '.png';
+  if(gamePlaying){
+    //calculate number
+    var dice = Math.floor(Math.random() * 6) + 1; //random number from 1-6
+    //display the number
+    var diceDOM = document.querySelector('.dice');
+    diceDOM.style.display = 'block'; //shows the dice #
+    diceDOM.src = 'dice-' + dice + '.png';
 
-  //update the round score as long as a 1 was not rolled
-  if (dice !== 1){
-    //add score
-    roundScore += dice;
-    document.querySelector('#current-' + activePlayer).textContent = roundScore;
-  } else {
-    //next player
-    nextPlayer();
+    //update the round score as long as a 1 was not rolled
+    if (dice !== 1){
+      //add score
+      roundScore += dice;
+      document.querySelector('#current-' + activePlayer).textContent = roundScore;
+    } else {
+      //next player
+      nextPlayer();
+    }
   }
 });
 
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
-  //add current score to global scores
-  scores[activePlayer] += roundScore;
+  if (gamePlaying){
+    //add current score to global scores
+    scores[activePlayer] += roundScore;
 
-  // update player interface
-  document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+    // update player interface
+    document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
-  //check if current player won the game
-  if (scores[activePlayer] >= 20) {
-    document.querySelector('#name-' + activePlayer).textContent = 'Winner!!!';
-    document.querySelector('.dice').style.display = 'none';
-    document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
-    document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
-  } else {
-    nextPlayer();
+    //check if current player won the game
+    if (scores[activePlayer] >= 20) {
+      document.querySelector('#name-' + activePlayer).textContent = 'Winner!!!';
+      document.querySelector('.dice').style.display = 'none';
+      document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
+      document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
+      gamePlaying = false;
+    } else {
+      //next player
+      nextPlayer();
+    }
   }
-
-  //next player
-  nextPlayer();
 });
 
 
@@ -80,6 +84,7 @@ function init() {
   scores = [0,0];
   activePlayer = 0;
   roundScore = 0;
+  gamePlaying = true;
 
   document.querySelector('.dice').style.display = 'none';
 
